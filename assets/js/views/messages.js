@@ -3,8 +3,7 @@ define(['collections/messages', 'views/message'], function(MessagesCollection, M
 	return Backbone.View.extend({
 		initialize: function(){
 			this.collection = new MessagesCollection();
-			this.collection.on('add', this.renderMessage, this);
-			this.collection.on('all', function(){console.log(arguments)});
+			this.collection.on('add', this.renderMessage, this);			
 			this.collection.fetch();
 		}, 
 		render: function(){
