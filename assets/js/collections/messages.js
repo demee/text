@@ -2,7 +2,7 @@ define(['models/message'], function(MessageModel){
 	
 	return Backbone.Collection.extend({		
 		url: function(){
-			return '/messages'
+			return '/message'
 		},
 		model: MessageModel
 	});

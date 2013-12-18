@@ -43,20 +43,27 @@
 
     //Override backbone sync method to use socket.io istead of ajax
     Backbone.sync = function(method, model, options) {
-      log('Backbone processing request ' + method + ' | ' + methodMap[method] + ' ' + options.url);      
 
-      socket[methodMap[method]](options.url, model.toJSON(), options.success);
+      var url      = _.result(model, 'url');
+      var method   = methodMap[method];
+      var callback = options.success;
+
+      log(method + ' ' + url);
+
+      socket[method](url, callback);
     };
 
     //Configure requirejs
     requirejs.config({
       baseUrl: '/js'
-    })
+    });
 
     //Loading main application view
     require(['views/messages'], function(MessagesView){
-      new MessagesView;
+      var mainView = new MessagesView();
+      $('body').append(mainView.render().$el);
     });
+
   });
 
 
