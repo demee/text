@@ -1,9 +1,7 @@
-(function(){
+define(function(){
 
-	text.views = text.views || {};
+  return Backbone.View.extend({
+		render: function(){};
+	});
 
-	text.views.Message = Backbone.View.extend({
-		render: function(){}
-	})
-
-}());
+});

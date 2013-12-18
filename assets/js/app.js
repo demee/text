@@ -11,13 +11,12 @@
 
   // as soon as this file is loaded, connect automatically, 
   var socket = io.connect();
-  var method_map = {
+  var methodMap = {
     'create': 'post', 
     'read': 'get',
     'update': 'put', 
     'delete': 'delete'
   };
-
 
   if (typeof console !== 'undefined') {
     log('Connecting to Sails.js...');
@@ -43,12 +42,21 @@
 
 
     //Override backbone sync method to use socket.io istead of ajax
-    Backbone.sync = function(method, model, options){
-      socket[method_map[method]]('/', model.toJSON(), options.success);
+    Backbone.sync = function(method, model, options) {
+      log('Backbone processing request ' + method + ' | ' + methodMap[method] + ' ' + options.url);      
+
+      socket[methodMap[method]](options.url, model.toJSON(), options.success);
     };
 
+    //Configure requirejs
+    requirejs.config({
+      baseUrl: '/js'
+    })
+
     //Loading main application view
-    appView = new text.views.Messages;
+    require(['views/messages'], function(MessagesView){
+      new MessagesView;
+    });
   });
 
 

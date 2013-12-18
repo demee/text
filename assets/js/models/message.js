@@ -1,7 +1,7 @@
-(function(){
-	text.models = text.models || {};
-
-	text.models.Message = Backbone.Model.extend({
-		url: '/message'
-	})
-}());
+define(function(){
+	return Backbone.Model.extend({
+		url: function(){
+			return '/message' + this.id ? '/' + this.id : '';
+		}
+	});
+});

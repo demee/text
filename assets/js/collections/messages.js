@@ -1,7 +1,10 @@
-(function(){
-	text.collections = text.collections || {};
+define(['models/message'], function(MessageModel){
+	
+	return Backbone.Collection.extend({		
+		url: function(){
+			return '/messages'
+		},
+		model: MessageModel
+	});
 
-	text.collections.Messages = Backbone.Collection.extend({
-		model: text.models.Message
-	})
-}());
+});
