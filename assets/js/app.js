@@ -45,12 +45,15 @@
     Backbone.sync = function(method, model, options) {
 
       var url      = _.result(model, 'url');
-      var method   = methodMap[method];
-      var callback = options.success;
+      var method   = methodMap[method];      
 
       log(method + ' ' + url);
+      log(JSON.stringify(model.toJSON()));
 
-      socket[method](url, callback);
+      socket[method](url, model.toJSON(), function(){
+        //TODO: Handle errors
+        options.success.apply(model, arguments);
+      });
     };
 
     //Configure requirejs
@@ -59,8 +62,15 @@
     });
 
     //Loading main application view
-    require(['views/messages'], function(MessagesView){
+    require(['views/messages', 'views/sendmessage'], function(MessagesView, SendMessage){
       var mainView = new MessagesView();
+      var sendMessage = new SendMessage();
+
+      sendMessage.on('new', function(message){
+        mainView.collection.add(message);
+      })
+
+      $('body').append(sendMessage.render().$el);
       $('body').append(mainView.render().$el);
     });
 
